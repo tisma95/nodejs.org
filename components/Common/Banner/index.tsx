@@ -1,16 +1,16 @@
 import { useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import styles from './index.module.scss';
-import { dateIsBetween } from '../../../util/dateIsBetween';
-import { isAbsoluteUrl } from '../../../util/isAbsoluteUrl';
+import { dateIsBetween } from '@/util/dateIsBetween';
+import { isAbsoluteUrl } from '@/util/isAbsoluteUrl';
 import type { FC } from 'react';
-import type { WebsiteBanner } from '../../../types';
+import type { WebsiteBanner } from '@/types';
 
 const useTextContent = ({ text, link }: WebsiteBanner, bannerBtnText: string) =>
   useMemo(() => {
     if (text) {
       return (
-        <p>
+        <p className={styles.bannerContent}>
           <a
             href={link}
             className={styles.bannerBtn}
