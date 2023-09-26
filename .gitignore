@@ -13,13 +13,13 @@ npm-debug.log
 build
 
 # Next.js Generated Files
-public/robots.txt
 public/sitemap.xml
 public/en/feed/*.xml
 
 # Jest
 coverage
 .swc
+junit.xml
 
 # Storybook
 storybook-static
@@ -28,7 +28,14 @@ storybook-static
 # Vercel Files
 .vercel
 .turbo
+cache
 
 # ESlint Cache Files
 .eslintmdcache
 .eslintjscache
+
+# Prettier Cache Files
+.prettiercache
+
+# TypeScript
+tsconfig.tsbuildinfo

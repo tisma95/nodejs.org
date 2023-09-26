@@ -1,47 +1,50 @@
 import NextImage from 'next/image';
+import { withThemeByDataAttribute } from '@storybook/addon-themes';
 import { SiteProvider } from '../providers/siteProvider';
 import { ThemeProvider } from '../providers/themeProvider';
 import { LocaleProvider } from '../providers/localeProvider';
-import { openSans } from '../util/nextFonts';
-import type { Preview } from '@storybook/react';
+import { OPEN_SANS_FONT, STORYBOOK_MODES, STORYBOOK_SIZES } from './constants';
+import type { Preview, ReactRenderer } from '@storybook/react';
 
-import '../styles/index.scss';
+import '../styles/new/index.css';
 
 const preview: Preview = {
   parameters: {
-    actions: { argTypesRegex: '^on[A-Z].*' },
-    controls: {
-      matchers: {
-        color: /(background|color)$/i,
-        date: /Date$/,
-      },
-    },
-    nextjs: {
-      router: {
-        basePath: '',
-      },
-    },
-    backgrounds: { disable: true },
+    nextjs: { router: { basePath: '' } },
+    chromatic: { modes: STORYBOOK_MODES },
+    viewport: { defaultViewport: 'large', viewports: STORYBOOK_SIZES },
   },
+  // These are extra Storybook Decorators applied to all stories
+  // that introduce extra functionality such as Theme Switching
+  // and all the App's Providers (Site, Theme, Locale)
+  decorators: [
+    Story => (
+      <SiteProvider>
+        <LocaleProvider>
+          <ThemeProvider>
+            <div className={`${OPEN_SANS_FONT.variable}`}>
+              <Story />
+            </div>
+          </ThemeProvider>
+        </LocaleProvider>
+      </SiteProvider>
+    ),
+    withThemeByDataAttribute<ReactRenderer>({
+      themes: {
+        light: 'light',
+        dark: 'dark',
+      },
+      defaultTheme: 'light',
+      attributeName: 'data-theme',
+    }),
+  ],
 };
 
-export const decorators = [
-  Story => (
-    <SiteProvider>
-      <LocaleProvider>
-        <ThemeProvider font={openSans.style.fontFamily}>
-          <div data-test-id="story-root">
-            <Story />
-          </div>
-        </ThemeProvider>
-      </LocaleProvider>
-    </SiteProvider>
-  ),
-];
-
+// This forces the Next.js image system to use unoptimized images
+// for all the Next.js Images (next/image) Components
 Object.defineProperty(NextImage, 'default', {
   configurable: true,
-  value: props => <NextImage {...props} unoptimized />,
+  value: (props: any) => <NextImage {...props} unoptimized />,
 });
 
 export default preview;

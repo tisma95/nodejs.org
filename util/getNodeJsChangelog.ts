@@ -11,9 +11,9 @@ export const getNodejsChangelog = (version: string): string => {
     'https://github.com/nodejs/node/blob/main/doc/changelogs';
 
   // Parse the version string and get the major and minor versions
-  const cleanVersion = semVer.clean(version);
-  const majorVersion = semVer.major(cleanVersion!);
-  const minorVersion = semVer.minor(cleanVersion!);
+  const cleanVersion = semVer.clean(version) as string;
+  const majorVersion = semVer.major(cleanVersion);
+  const minorVersion = semVer.minor(cleanVersion);
 
   // Determine the URL of the changelog based on the version
   if (majorVersion >= 4) {
